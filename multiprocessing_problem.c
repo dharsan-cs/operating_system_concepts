@@ -1,4 +1,3 @@
-#include <fcntl.h>
 #include <mqueue.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,12 +6,9 @@
 #include <unistd.h>
 
 
-
-///this code is buggy continues throwing too many open files Error
-
-const char *reader_reverser_queue = "/reader_reverser_queue";
-const char *reverser_writer_queue = "/reverser_writer_queue";
-int message_max_size = 1024;
+const char *reader_reverser_queue = "/reader_reverser_queue_01";
+const char *reverser_writer_queue = "/reverser_writer_queue_01";
+int message_max_size = 256;
 char *eof = "EOF";
 
 void reader_process(char *file_name) {
@@ -95,16 +91,18 @@ int main() {
 
   reader_rev_q_attr.mq_curmsgs = 0;
   reader_rev_q_attr.mq_msgsize = sizeof(char) * message_max_size;
-  reader_rev_q_attr.mq_maxmsg = 10;
+  reader_rev_q_attr.mq_maxmsg = 5;
   reader_rev_q_attr.mq_flags = 0;
 
   reverser_write_q_attr.mq_curmsgs = 0;
   reverser_write_q_attr.mq_msgsize = sizeof(char) * message_max_size;
-  reverser_write_q_attr.mq_maxmsg = 10;
+  reverser_write_q_attr.mq_maxmsg = 5;
   reverser_write_q_attr.mq_flags = 0;
 
-  reader_rev_q = mq_open(reader_reverser_queue, O_CREAT | O_RDWR, 0666, &reader_rev_q_attr);
-  reverser_write_q = mq_open(reverser_writer_queue, O_CREAT | O_RDWR, 0666, &reverser_write_q_attr);
+  reader_rev_q = mq_open(reader_reverser_queue, O_CREAT | O_RDWR, 0666,
+                         &reader_rev_q_attr);
+  reverser_write_q = mq_open(reverser_writer_queue, O_CREAT | O_RDWR, 0666,
+                             &reverser_write_q_attr);
   if (reader_rev_q == (mqd_t)-1 || reverser_write_q == (mqd_t)-1) {
     perror("Parent_prcc q open error");
     exit(1);
