@@ -18,7 +18,7 @@ char *eof = "EOF";
 void reader_process(char *file_name) {
   mqd_t queue = mq_open(reader_reverser_queue, O_WRONLY);
   if (queue == (mqd_t)-1) {
-    perror("Reader_prcss(q error)");
+    perror("Reader_prcss q open error");
     exit(1);
   }
   FILE *file = fopen(file_name, "r");
@@ -29,7 +29,7 @@ void reader_process(char *file_name) {
   mq_send(queue, eof, strlen(eof) + 1, 1);
 
   if (mq_close(queue) == -1) {
-    perror("reader_prcc q close error");
+    perror("Reader_prcc q close error");
   }
   fclose(file);
 }
@@ -40,7 +40,7 @@ void reverser_process() {
   unsigned int priority;
 
   if (read_rev_q == (mqd_t)-1 || rev_write_q == (mqd_t)-1) {
-    perror("Reader_prcss(q error)");
+    perror("Reverse_prcc q open error");
     exit(1);
   }
   char buffer[message_max_size];
@@ -50,7 +50,7 @@ void reverser_process() {
     if (strcmp(buffer, eof) == 0) {
       mq_send(rev_write_q, eof, strlen(eof) + 1, 1);
       if (mq_close(read_rev_q) == -1 || mq_close(rev_write_q) == -1) {
-        perror("reverse_prcc q close error");
+        perror("Reverse_prcc q close error");
       }
       return;
     }
@@ -68,7 +68,7 @@ void reverser_process() {
 void writer(char *file_name) {
   mqd_t queue = mq_open(reverser_writer_queue, O_RDONLY);
   if (queue == (mqd_t)-1) {
-    perror("Writer process(q error)");
+    perror("Writer_prcc q open error");
     exit(1);
   }
   FILE *file = fopen(file_name, "w");
@@ -106,7 +106,7 @@ int main() {
   reader_rev_q = mq_open(reader_reverser_queue, O_CREAT | O_RDWR, 0666, &reader_rev_q_attr);
   reverser_write_q = mq_open(reverser_writer_queue, O_CREAT | O_RDWR, 0666, &reverser_write_q_attr);
   if (reader_rev_q == (mqd_t)-1 || reverser_write_q == (mqd_t)-1) {
-    perror("mq_open error in main");
+    perror("Parent_prcc q open error");
     exit(1);
   }
 
@@ -141,7 +141,7 @@ int main() {
   }
 
   if (mq_close(reader_rev_q) == -1 || mq_close(reverser_write_q) == -1) {
-    perror("parent_prcc q close error");
+    perror("Parent_prcc q close error");
   }
   mq_unlink(reader_reverser_queue);
   mq_unlink(reverser_writer_queue);
