@@ -80,6 +80,7 @@ void *write_thread_function(void *args) {
 
     // returning if there is no more strings to write
     if (string_status[i] == no_more_string) {
+      fclose(file_ptr);
       return 0;
     }
 
@@ -88,8 +89,6 @@ void *write_thread_function(void *args) {
     string_status[i] = string_written;
     i = i + 1;
   }
-
-  fclose(file_ptr);
 }
 
 int main() {
