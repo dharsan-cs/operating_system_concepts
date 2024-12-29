@@ -1,14 +1,5 @@
                      pipes                              queue
-1.      unamed pipes cannot be accessed           once a queue is created and configured 
-        once the process which created            by a process ,it exist in system even  
-        the pipes exits( )                        after the exit of creating process and any other 
-                                                  process can accessed(.it can  be removed only when 
-                                                  any process unlinks it)
-
-2.     interation between parent-child process    any process in a system can access a queue 
-       or interact among child process of parent  using queue name(given queue exist)
-
-3.    no clear boundries between messages and     clear boundries betwen the messages
+1.    no clear boundries between messages and     clear boundries betwen the messages
       data is stored as streams( single read 
       operation could fetch all the data from
       pipe)
