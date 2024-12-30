@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-const char *shared_memory_name = "shared_memory";
 
 typedef struct sleeping_barber {
   int num_waiting_chair;
