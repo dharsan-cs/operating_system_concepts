@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-
 typedef struct sleeping_barber {
   int num_waiting_chair;
   sem_t waiting_chair_sem;
