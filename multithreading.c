@@ -16,8 +16,7 @@ int main() {
   // creating threads
   for (int i = 0; i < num_thread; i++) {
     thread_id[i] = i + 1;
-    if (pthread_create(&threads[i], NULL, thread_function, &thread_id[i]) !=
-        0) {
+    if (pthread_create(&threads[i], NULL, thread_function, &thread_id[i]) != 0) {
       printf("failed to create a thread");
       exit(1);
     }
