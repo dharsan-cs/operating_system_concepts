@@ -4,6 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+///this algo makes sure deadlock never happens by using order access like teachnique to prevent circular wait  
+
 sem_t phil_fork[5];
 volatile int running = 1;
 
